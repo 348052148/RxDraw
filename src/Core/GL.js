@@ -48,6 +48,77 @@ class GL {
         this.cxt.clearRect(x, y, width, height)
     }
 
+    fillRect(x, y, width, height){
+        this.cxt.fillRect(x,y,width,height);
+    }
+
+    strokeRect(x, y, width, height){
+        this.cxt.strokeRect(x,y,width,height);
+    }
+    //-----------------路径绘制---------------------------
+    beginPath(){
+        this.cxt.beginPath();
+    }
+
+    closePath(){
+        this.cxt.closePath();
+    }
+
+    stroke(){
+        this.cxt.stroke();
+    }
+
+    fill(){
+        this.cxt.fill();
+    }
+
+    moveTo(x, y){
+        this.cxt.moveTo(x, y);
+    }
+
+    lineTo(x,y){
+        this.cxt.lineTo(x,y);
+    }
+
+    arc(x, y, radius, startAngle, endAngle, anticlockwise){
+        this.cxt.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+    }
+
+    arcTo(x1, y1, x2, y2, radius){
+        this.cxt.arcTo(x1, y1, x2, y2, radius);
+    }
+
+    quadraticCurveTo(cp1x, cp1y, x, y){
+        this.cxt.quadraticCurveTo(cp1x, cp1y, x, y);
+    }
+
+    bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y){
+        this.cxt.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
+    }
+
+    rect(x, y, width, height){
+        this.cxt.rect(x, y, width, height);
+    }
+    /**
+     *  new Path2D();     // 空的Path对象
+        new Path2D(path); // 克隆Path对象
+        new Path2D(d);    // 从SVG建立Path对象
+     */
+    Path2D(){
+        return new Path2D();
+    }
+    /*******路径绘制结束****** */
+
+    //style
+    fillStyle(color){
+        this.cxt.fillStyle = color;
+    }
+    strokeStyle(color){
+        this.cxt.strokeStyle = color;
+    }
+    globalAlpha(alpha){
+        this.globalAlpha = alpha;
+    }
 }
 
 export default GL;
