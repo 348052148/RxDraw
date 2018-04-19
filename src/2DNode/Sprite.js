@@ -5,7 +5,15 @@ class Sprite extends Node{
 
     constructor(){
         super();
-        this.id=2;
+    }
+    onBeforeDraw(gl){
+        if(gl.isMode){
+            console.log(this._ox);
+            console.log(this._oy);
+            console.log(this._ow);
+            console.log(this._oh);
+            gl.clearRect(this._ox,this._oy,this._ow,this._oh);
+        }
     }
 
     onDraw(){

@@ -1,15 +1,13 @@
 import GL from "./GL";
-
 class Director {
 
     constructor(application){
         this.application = application;
         //初始化GL上下文
-        GL.context = this.application.getContext();
+        this.gl = new GL(this.application.getContext(),this.application.bus);
         //所有场景
         this.sceneList=new Array();
         this.runScene=null;
-        this.isRun = false;
     }
     //加入一个场景
     addScene(scene){
@@ -70,6 +68,7 @@ class Director {
         if(!this.isRun && scene!=null){
             BFrame.scene = scene;
             BFrame.application  = this.application;
+            BFrame.gl = this.gl;
             BFrame();
             this.isRun = true;
         }
@@ -97,10 +96,12 @@ class Director {
 function BFrame(time) {
     // BFrame.application.fps = 1000/(time-BFrame.preTime);
     BFrame.preTime = time;
-    if(GL.getState()==1){
+    if(BFrame.application.getState()){
         
-        BFrame.scene.render();
-        GL.setState(2);
+        BFrame.scene.render(BFrame.gl);
+
+        BFrame.application.setState(false);
+        
     }
 
     BFrame.frameID = window.requestAnimationFrame(BFrame);

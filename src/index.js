@@ -8,38 +8,60 @@ import Director from './Core/Director';
 
 let app = new App();
 
-app.createWindow();
+app.create({
+  init:()=>{
 
-let context = app.getContext();
+  },
+  render:(director)=>{
+    
+    let s = new Sprite();
 
-let s = new Sprite();
+    s.x =0;
+    s.y = 0;
+    s.width=100;
+    s.height=100;
 
-s.x =1;
-s.y = 1;
 
-s.onDraw=function(){
-    context.save();
-    context.fillRect(25+s.x,25+s.y,100,100);
-    context.fillRect(25+s.x,25+s.y,100,100);
-    context.clearRect(45+s.x,45+s.y,60,60);
-    context.strokeRect(50+s.x,50+s.y,50,50);
-    context.restore();
-}
+    s.onDraw=function(gl){
+        let context = gl.cxt;
+        context.fillRect(this.x,this.y,this.width,this.height);
+        context.fillRect(this.x,this.y,this.width,this.height);
+        context.clearRect(20+this.x,20+this.y,this.width-40,this.height-40);
+        context.strokeRect(25+this.x,25+this.y,this.width-50,this.height-50);
+    }
 
-document.querySelector('#btn').addEventListener('click',()=>{
-    s.x =100;
-    s.y = 100;
-   
+    document.querySelector('#btn').addEventListener('click',()=>{
+        // setInterval(()=>{
+        //   s.x +=10;
+        //   s.y += 10;
+        //   s.width +=10;
+        // },500);
+        s.x +=100;
+        s.y += 100;
+        s.width +=10;
+    });
+
+
+    let s1 = new Sprite();
+    s1.x=200;s1.y=200;s1.width=30;s1.height=30;
+
+    s1.onDraw=function(gl){
+      let context = gl.cxt;
+      context.save();
+      context.fillRect(this.x,this.y,this.width,this.height);
+    }
+
+    let scene = new Scene();
+    scene.width = 600;
+    scene.height = 400;
+
+    scene.addChild(s1);
+
+    scene.addChild(s);
+
+
+    director.addScene(scene);
+
+    director.run();
+  }
 });
-
-let scene = new Scene();
-
-scene.addChild(s);
-
-
-let director = new Director(app);
-
-director.addScene(scene);
-
-director.run();
-

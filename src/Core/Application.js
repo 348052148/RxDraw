@@ -1,10 +1,20 @@
+import Director from './Director';
+import Rx from 'rxjs';
 class Application  {
 
     constructor(){
-    
+        //使用rxjs处理 避免重复渲染操作能一次渲染，绝不多次渲染
+        this.bus = new Rx.Subject();
+        this.state = true;
+        this.bus.subscribe({
+            next: (id) =>{
+               // console.log('接受渲染');
+                this.setState(id);
+            }
+        });
     }
 
-    createWindow(){
+    create(config){
         let ele = document.body;
 
         this.canvas= document.createElement("canvas");
@@ -19,6 +29,16 @@ class Application  {
         ele.appendChild(this.canvas);
 
         this.cxt =document.getElementById('abs').getContext("2d");
+        
+        //应用初始化
+        if(config.init) config.init(this);
+        this.director = new Director(this);
+        //应用渲染
+        if(config.render) config.render(this.director);
+        //
+        this.director.run();
+        //应用销毁
+        if(config.distory) config.distory(this);
     }
 
     getContext(){

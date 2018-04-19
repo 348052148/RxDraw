@@ -1,13 +1,15 @@
-import Rx from 'rxjs/Rx';
 class Container {
 
     constructor(){
-        this.subject = new Rx.Subject();
         this.nodeLst = [];
+        //容器的层次
+        this.index = 0;
     }
 
     addChild(node) {
-        this.nodeLst.push({id:node.id,node:node,subscription:this.subject.subscribe({next:node.onDraw,complete:node.onComplete})});
+        //层次依次递增
+        this.nodeLst[this.index] = {id:node.id,node:node};
+        this.index = this.index+1;
     }
 
     removeChild(node){
@@ -16,7 +18,6 @@ class Container {
             if(v.id == node.id){
                 index = i;
                 //取消订阅
-                v.subscription.unsubscribe();
             }
         });
         //从数组中移除
