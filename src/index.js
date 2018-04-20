@@ -23,13 +23,11 @@ app.create({
 
 
     s.onDraw=function(gl){
-        let context = gl.cxt;
-        context.fillRect(this.x,this.y,this.width,this.height);
-        context.fillRect(this.x,this.y,this.width,this.height);
-        context.clearRect(20+this.x,20+this.y,this.width-40,this.height-40);
-        context.strokeRect(25+this.x,25+this.y,this.width-50,this.height-50);
+       gl.image().createFromUrl('http://pic29.photophoto.cn/20131204/0034034499213463_b.jpg',(image)=>{
+          image.draw(20,30);
+          console.log(image);
+       });
     }
-
     document.querySelector('#btn').addEventListener('click',()=>{
         // setInterval(()=>{
         //   s.x +=10;
