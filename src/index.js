@@ -5,6 +5,11 @@ import Scene from './2DNode/Scene';
 import Director from './Core/Director';
 
 
+import Plane from './Plane/Src/Plane';
+import Star from './Plane/Src/Star';
+import StarDispatch from './Plane/Src/StarDispatch';
+
+import p from './Plane/Resource/Plane.png';
 
 let app = new App();
 
@@ -12,53 +17,48 @@ app.create({
   init:()=>{
 
   },
-  render:(director)=>{
+  resource:{
+    plane:p
+  },
+  render:(director,resource)=>{
     
-    let s = new Sprite();
-
-    s.x =0;
-    s.y = 0;
-    s.width=100;
-    s.height=100;
-
-
-    s.onDraw=function(gl){
-       gl.image().createFromUrl('http://pic29.photophoto.cn/20131204/0034034499213463_b.jpg',(image)=>{
-          image.draw(20,30);
-          console.log(image);
-       });
-    }
-    document.querySelector('#btn').addEventListener('click',()=>{
-        // setInterval(()=>{
-        //   s.x +=10;
-        //   s.y += 10;
-        //   s.width +=10;
-        // },500);
-        s.x +=100;
-        s.y += 100;
-        s.width +=10;
-    });
-
-
-    let s1 = new Sprite();
-    s1.x=200;s1.y=200;s1.width=30;s1.height=30;
-
-    s1.onDraw=function(gl){
-      let context = gl.cxt;
-      context.save();
-      context.fillRect(this.x,this.y,this.width,this.height);
-    }
-
     let scene = new Scene();
-    scene.width = 600;
-    scene.height = 400;
+    scene.width = 370;
+    scene.height = 660;
 
-    scene.addChild(s1);
+    console.log(resource);
 
-    scene.addChild(s);
+    let plane = new Plane(resource.plane);
 
+    scene.addChild(plane);
 
     director.addScene(scene);
+
+    let sdispatch = new StarDispatch();
+
+    sdispatch.run();
+
+    scene.addChild(sdispatch);
+
+ 
+    //状态机
+    document.onkeydown = (event) => {
+      if(event.keyCode == 39){//right
+          plane.state = 2;
+      }
+      if(event.keyCode == 37){//left
+          plane.state = 1;
+      }
+      if(event.keyCode == 38){//top
+        plane.state = 3;
+      }
+      if(event.keyCode == 40){//下
+        plane.state = 4;
+      }
+    };
+    document.onkeyup = (event) => {
+      plane.state=0;
+    }
 
     director.run();
   }

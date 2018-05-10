@@ -202,6 +202,10 @@ class ImageBlock{
     constructor(cxt,imgSource){
         this.imgSource =imgSource;
         this.cxt = cxt;
+        this.volum = {
+            width:imgSource.width,
+            height:imgSource.height
+        }
         this.cxt.restore();
         this.cxt.save();
     }
@@ -231,16 +235,16 @@ class ImageBlock{
 
 
     static createFromImageElement(image){
-        return new ImageBlock(Image.cxt,image)
+        return new ImageBlock(ImageBlock.cxt,image)
     }
     static createFromVideoElement(video){
-        return new ImageBlock(Image.cxt,video)
+        return new ImageBlock(ImageBlock.cxt,video)
     }
     static createFromCanvasElement(canvans){
-        return new ImageBlock(Image.cxt,canvans)
+        return new ImageBlock(ImageBlock.cxt,canvans)
     }
     static createFromImageBitmap(bitmap){
-        return new ImageBlock(Image.cxt,bitmap)
+        return new ImageBlock(ImageBlock.cxt,bitmap)
     }
 
     static createFromUrl(url,func){

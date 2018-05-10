@@ -6,3 +6,5 @@ class Layer extends Node{
 
     }
 }
+
+export default Layer;

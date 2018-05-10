@@ -8,6 +8,8 @@ class Director {
         //所有场景
         this.sceneList=new Array();
         this.runScene=null;
+        //定时器
+        this.timers = [];
     }
     //加入一个场景
     addScene(scene){
@@ -69,6 +71,7 @@ class Director {
             BFrame.scene = scene;
             BFrame.application  = this.application;
             BFrame.gl = this.gl;
+            BFrame.timers = this.timers;
             BFrame();
             this.isRun = true;
         }
@@ -103,6 +106,17 @@ function BFrame(time) {
         BFrame.application.setState(false);
         
     }
+
+    // for (let timer in BFrame.timers) {
+    //     //时间到达执行
+    //     if(time - timer.pretime > timer.interval){
+    //         timer.pretime = time;
+    //         timer.func();
+    //     }else{
+
+    //     }
+        
+    // }
 
     BFrame.frameID = window.requestAnimationFrame(BFrame);
 }
