@@ -42,7 +42,8 @@ class Application  {
             //应用渲染
             if(config.render) config.render(this.director,resource);
             //导演指挥
-            this.director.run();
+            if(!config.flush) config.flush = false;
+            this.director.run(config.flush);
         });
     
         //应用销毁

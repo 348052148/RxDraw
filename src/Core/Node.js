@@ -1,5 +1,6 @@
 import Container from "./Container";
-
+import Vector from './Vector';
+import Collision from "./Collision";
 class Node extends Container{
 
     constructor(){
@@ -18,6 +19,10 @@ class Node extends Container{
         this._h = null;
 
         this._gl = null;
+
+        this.collision = [];
+
+        this._position();
     }
 
     get x(){
@@ -59,7 +64,16 @@ class Node extends Container{
     }
 
     emit(){
+        this._position();
         if(this._gl) this._gl.render(this.id);
+    }
+    //计算点
+    _position(){
+        this.points = new Array();
+        this.points.push(new Vector(this.x, this.y));
+        this.points.push(new Vector(this.x, this.y+this.height));
+        this.points.push(new Vector(this.x+this.width, this.y+this.height));
+        this.points.push(new Vector(this.x+this.width, this.y));
     }
 
     uuid(){
@@ -79,6 +93,7 @@ class Node extends Container{
             this._gl = gl;
             this.onBeforeDraw(gl);
             this.onDraw(gl);
+            this.checkCollision(gl);
             this.onAfterDraw(gl);
         }
         this.nodeLst.forEach((v,i)=>{
@@ -98,9 +113,66 @@ class Node extends Container{
     onDraw(){
         
     }
+    //碰撞检测draw后
+    onCollision(){
+        
+    }
 
     onComplete(){
         
+    }
+
+    //碰撞检测
+    checkCollision(gl){
+        //绘制碰撞模型
+        let path = gl.path();
+        let firstPos = {};
+        this.points.forEach((p,i)=>{
+            if(i ==0){
+                path.moveTo(p.x,p.y);
+                firstPos = p;
+            }
+           else{
+                path.lineTo(p.x,p.y);
+           }
+        });
+        path.lineTo(firstPos.x,firstPos.y);
+        path.stroke();
+
+        this.collision.forEach((v)=>{
+            if(this.isCollision(v.node)){
+                //全局监听项
+                this.onCollision(v.node);
+                //具体监听项
+                v.callback(v.node);
+                if(v.type == 'once') this.removeCollisoionListener(v.node);
+            }
+        });
+    }
+
+    //添加需要观察的碰撞对象
+    addCollisionListener(node,callback){
+        this.collision.push({node:node,callback:callback,type:'long'});
+    }
+
+    addOnceCollisionListener(node,callback){
+        this.collision.push({node:node,callback:callback,type:'once'});
+    }
+
+    removeCollisoionListener(node){
+        this.collision.forEach((v,i)=>{
+            if(v.node.id == node.id){
+                this.collision.splice(i,1);
+                return true;
+            }
+        })
+    }
+
+
+    //判断是否碰撞
+    isCollision(node){
+        let collision = new Collision();
+        return collision.PolyVsPoly(this,node);
     }
 
 }

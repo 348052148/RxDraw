@@ -171,30 +171,37 @@ class Path{
 
     moveTo(x, y){
         this.cxt.moveTo(x, y);
+        return this;
     }
 
     lineTo(x,y){
         this.cxt.lineTo(x,y);
+        return this;
     }
 
     arc(x, y, radius, startAngle, endAngle, anticlockwise){
         this.cxt.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+        return this;
     }
 
     arcTo(x1, y1, x2, y2, radius){
         this.cxt.arcTo(x1, y1, x2, y2, radius);
+        return this;
     }
 
     quadraticCurveTo(cp1x, cp1y, x, y){
         this.cxt.quadraticCurveTo(cp1x, cp1y, x, y);
+        return this;
     }
 
     bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y){
         this.cxt.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
+        return this;
     }
 
     rect(x, y, width, height){
         this.cxt.rect(x, y, width, height);
+        return this;
     }
 }
 

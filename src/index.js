@@ -14,11 +14,12 @@ import p from './Plane/Resource/Plane.png';
 let app = new App();
 
 app.create({
-  init:()=>{
-
-  },
+  flush:true,
   resource:{
     plane:p
+  },
+  init:()=>{
+
   },
   render:(director,resource)=>{
     
@@ -34,11 +35,18 @@ app.create({
 
     director.addScene(scene);
 
-    let sdispatch = new StarDispatch();
+    // let sdispatch = new StarDispatch();
 
-    sdispatch.run();
+    // sdispatch.run(plane);
 
-    scene.addChild(sdispatch);
+    // scene.addChild(sdispatch);
+
+    let star = new Star();
+    scene.addChild(star);
+
+    plane.addOnceCollisionListener(star,(v)=>{
+        console.log(v);
+    });
 
  
     //状态机
@@ -60,6 +68,5 @@ app.create({
       plane.state=0;
     }
 
-    director.run();
   }
 });

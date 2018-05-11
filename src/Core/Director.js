@@ -52,7 +52,7 @@ class Director {
         }
     };
 
-    run(){
+    run(isFps){
         var scene=this.runScene;
         //兼容
         if(!window.requestAnimationFrame){
@@ -71,6 +71,7 @@ class Director {
             BFrame.scene = scene;
             BFrame.application  = this.application;
             BFrame.gl = this.gl;
+            BFrame.isFps = isFps;
             BFrame.timers = this.timers;
             BFrame();
             this.isRun = true;
@@ -99,7 +100,7 @@ class Director {
 function BFrame(time) {
     // BFrame.application.fps = 1000/(time-BFrame.preTime);
     BFrame.preTime = time;
-    if(BFrame.application.getState()){
+    if(BFrame.application.getState() || BFrame.isFps){
         
         BFrame.scene.render(BFrame.gl);
 
